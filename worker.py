@@ -40,6 +40,13 @@ INSTANCE_NAME = requests.get(METADATA_URL_INSTANCE + 'hostname', headers=METADTA
 INSTANCE_ZONE_URL = requests.get(METADATA_URL_INSTANCE + 'zone', headers=METADTA_FLAVOR).text
 INSTANCE_ZONE = INSTANCE_ZONE_URL.split('/')[0]
 
+# new pubsub client
+pubsub_client = pubsub.SubscriberClient()
+
+# might need to change the logger, but we'll see
+#sd_logger_client = google.cloud.logging.Client()
+#sd_logger_client.setup_logging()
+
 # Parameters to call with the script
 @click.command()
 @click.option('--toprocess', default=1,
@@ -141,7 +148,8 @@ def postpone_ack(params):
     #[END postpone_ack]
 
 """Create the API clients."""
-pubsub_client = pubsub.Client()
+# pubsub.Client seems to no longer exist. Moved new method into code above.
+#pubsub_client = pubsub.Client()
 gcs_client = storage.Client()
 
 """Launch the loop to pull media to process."""
